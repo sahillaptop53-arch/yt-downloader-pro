@@ -26,7 +26,7 @@ def video_info():
     video_id = extract_id(url)
     if not video_id:
         return jsonify({'error': 'Invalid YouTube URL'}), 400
-    ydl_opts = {'quiet': True, 'no_warnings': True, 'noplaylist': True}
+    ydl_opts = {'quiet': True, 'no_warnings': True, 'noplaylist': True, 'extractor_args': {'youtube': {'player_client': ['android', 'ios', 'web']}}}
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
@@ -49,7 +49,7 @@ def download():
     if not url:
         return jsonify({'error': 'URL is required'}), 400
     format_spec = 'bestaudio/best' if fmt == 'mp3' else 'best[ext=mp4]/best'
-    ydl_opts = {'quiet': True, 'no_warnings': True, 'format': format_spec, 'noplaylist': True}
+    ydl_opts = {'quiet': True, 'no_warnings': True, 'format': format_spec, 'noplaylist': True, 'extractor_args': {'youtube': {'player_client': ['android', 'ios', 'web']}}}
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
